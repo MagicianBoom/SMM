@@ -8,10 +8,12 @@ typedef unsigned long long u64;
 
 #define SMM_BLOCK_ALIGN_BYTES    4
 #define SMM_ELEMENT_HEAD_SIZE    (sizeof(struct smm_head))
-#define SMM_NEXT_NODE_OFF_BITS   21
-#define SMM_PRE_NODE_OFF_BITS    (SMM_NEXT_NODE_OFF_BITS)
+#define SMM_OFF_BITS             21
+#define SMM_NEXT_NODE_OFF_BITS   (SMM_OFF_BITS)
+#define SMM_PRE_NODE_OFF_BITS    (SMM_OFF_BITS)
 #define SMM_NODE_LENGTH_OFF_BITS (64 - (SMM_NEXT_NODE_OFF_BITS) - (SMM_PRE_NODE_OFF_BITS))
-#define SMM_INVALID_OFFSET       ((1 << SMM_NEXT_NODE_OFF_BITS) - 1)
+#define SMM_INVALID_OFFSET       ((1 << SMM_OFF_BITS) - 1)
+#define SMM_MAX_MANAGER_MEM_SIZE (1 << SMM_OFF_BITS)
 #define SMM_VALID                1
 #define SMM_INVALID              0
 #define SMM_TRUE                 1

@@ -138,7 +138,9 @@ int smm_memory_create(struct smm_mem_info *mem_info)
     ret = is_smm_mem_info_valid(mem_info);
     SMM_ASSERT_RET_VALID(ret, ret);
 
-    if ((mem_info->size % SMM_BLOCK_ALIGN_BYTES) || (mem_info->size < SMM_ELEMENT_HEAD_SIZE * 2)) {
+    if ((mem_info->size % SMM_BLOCK_ALIGN_BYTES) ||
+        (mem_info->size < SMM_ELEMENT_HEAD_SIZE * 2) ||
+        mem_info->size > SMM_MAX_MANAGER_MEM_SIZE) {
         return SMM_PARAMETER_INVALID;
     }
 

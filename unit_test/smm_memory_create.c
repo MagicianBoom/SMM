@@ -32,6 +32,43 @@ TEST_F(SMMTest, TestSMMMemoryCreateSmallSize)
     mem_info.read = smm_mem_read;
     mem_info.write = smm_mem_write;
     EXPECT_EQ(SMM_PARAMETER_INVALID, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
+}
+
+TEST_F(SMMTest, TestSMMMemoryCreateMaxSize)
+{
+    struct smm_mem_info mem_info;
+
+    mem_info.base_addr = (u8 *)malloc(SMM_MAX_MANAGER_MEM_SIZE);
+    mem_info.size = SMM_MAX_MANAGER_MEM_SIZE;
+    mem_info.read = smm_mem_read;
+    mem_info.write = smm_mem_write;
+    EXPECT_EQ(SMM_OK, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
+}
+
+TEST_F(SMMTest, TestSMMMemoryCreateNormal)
+{
+    struct smm_mem_info mem_info;
+
+    mem_info.base_addr = (u8 *)malloc(0x1000);
+    mem_info.size = 0x1000;
+    mem_info.read = smm_mem_read;
+    mem_info.write = smm_mem_write;
+    EXPECT_EQ(SMM_OK, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
+}
+
+TEST_F(SMMTest, TestSMMMemoryCreateBigSize)
+{
+    struct smm_mem_info mem_info;
+
+    mem_info.base_addr = (u8 *)malloc(0x400000);
+    mem_info.size = 0x400000;
+    mem_info.read = smm_mem_read;
+    mem_info.write = smm_mem_write;
+    EXPECT_EQ(SMM_PARAMETER_INVALID, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
 }
 
 TEST_F(SMMTest, TestSMMMemoryCreateInvalidSize)
@@ -43,6 +80,7 @@ TEST_F(SMMTest, TestSMMMemoryCreateInvalidSize)
     mem_info.read = smm_mem_read;
     mem_info.write = smm_mem_write;
     EXPECT_EQ(SMM_PARAMETER_INVALID, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
 }
 
 TEST_F(SMMTest, TestSMMMemoryCreateInvalidRead)
@@ -54,6 +92,7 @@ TEST_F(SMMTest, TestSMMMemoryCreateInvalidRead)
     mem_info.read = NULL;
     mem_info.write = smm_mem_write;
     EXPECT_EQ(SMM_PTR_ERR, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
 }
 
 TEST_F(SMMTest, TestSMMMemoryCreateInvalidWrite)
@@ -65,5 +104,6 @@ TEST_F(SMMTest, TestSMMMemoryCreateInvalidWrite)
     mem_info.read = smm_mem_read;
     mem_info.write = NULL;
     EXPECT_EQ(SMM_PTR_ERR, smm_memory_create(&mem_info));
+    free(mem_info.base_addr);
 }
 
